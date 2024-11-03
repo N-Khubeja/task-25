@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
-
+import MailForm from './component/MailForm';
+  const Component = lazy(() => import('./component/Component'))
 function App() {
+   const [toggle,settoggle] = useState(false)
+   const appear = () => {
+    settoggle((prev) => !prev)
+   }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <button onClick={appear}>{toggle ? 'remove' : 'add'}</button>
+        {toggle && (
+          <Suspense fallback={<h1>...LOADING</h1>}>
+            <Component/>
+          </Suspense>
+        )}
+        <MailForm/>
     </div>
   );
 }
